@@ -1,13 +1,21 @@
 import networkx as nx
 import numpy as np
 
-def pagerank(G, num_iter=100):
+def pagerank_power_method(G, num_iter=100):
     M = get_google_matrix(G)
     n = M.shape[0]
     V = np.ones(n)/n
     for _ in range(num_iter):
         V = np.dot(M, V)
+        # print(V)
     return V
+
+def pagerank_eigendecomposition(G, d=0.85):
+    M = get_google_matrix(G, d=d)
+    eigenvalues, eigenvectors = np.linalg.eig(M)
+    index = eigenvalues.argsort()[-1]
+    largest = np.array(eigenvectors[..., index]).flatten().real
+    return largest/np.sum(np.abs(largest))
 
 def get_google_matrix(G, d=0.85):
     A = nx.to_numpy_array(G).T
@@ -28,8 +36,10 @@ def get_google_matrix(G, d=0.85):
     return M
 
 if __name__ == "__main__":
-    G = nx.barabasi_albert_graph(100, 60)
+    G = nx.barabasi_albert_graph(5, 4)
+    print(get_google_matrix(G))
     
-    pagerank_res = pagerank(G)
+    pagerank_res = pagerank_power_method(G)
+    pagerank_res = pagerank_eigendecomposition(G)
     print(pagerank_res)
     print(sum(pagerank_res))

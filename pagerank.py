@@ -7,7 +7,7 @@ def pagerank_power_method(G, num_iter=100):
     V = np.ones(n)/n
     for _ in range(num_iter):
         V = np.dot(M, V)
-        # print(V)
+        
     return V
 
 def pagerank_eigendecomposition(G, d=0.85):

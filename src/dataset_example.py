@@ -2,6 +2,11 @@ import networkx as nx
 import pagerank
 
 def parse_hollins_dataset(path):
+    """
+    Parse data from Hollins University dataset.
+
+    Returns networkx graph and dictionart of websites with their corresponding indexes.
+    """
     G = nx.Graph()
     site_dict = dict()
     with open(path, "r") as f:
@@ -23,8 +28,14 @@ def parse_hollins_dataset(path):
     return G, site_dict
 
 if __name__ == "__main__":
+    import time
+    import pagerank
+    
     G, site_dict = parse_hollins_dataset("data/in.txt")
+    start = time.time()
     pagerank_res = pagerank.pagerank_power_method_w_eps(G)
+    end = time.time() - start
+    print(f"Time taken by PageRank: {end}")
     result_dict = dict()
 
     for index, res in enumerate(pagerank_res):

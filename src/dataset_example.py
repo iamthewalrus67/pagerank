@@ -32,6 +32,7 @@ if __name__ == "__main__":
     import pagerank
     
     G, site_dict = parse_hollins_dataset("data/in.txt")
+    G = nx.pagerank(nx.to_networkx_graph(pagerank.get_google_matrix(G)))
     start = time.time()
     pagerank_res = pagerank.pagerank_power_method_w_eps(G)
     end = time.time() - start
